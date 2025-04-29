@@ -12,4 +12,4 @@ app.get('/', (c) => {
   return c.text('Hello Newsletter')
 });
 
-app.route('/api', newsRoutes);
+app.route('/api/news', newsRoutes);
