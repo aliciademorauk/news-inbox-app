@@ -24,12 +24,12 @@ export default async function NewsListPage() {
         <p>No news yet.</p>
       ) : (
         <ul style={{ padding: 0 }}>
-          {news.map((item) => (
-            <li key={item.id} style={{ margin: '1em 0' }}>
-              <Link href={`/news/${item.id}`}>
-                <strong>{item.title}</strong>
+          {news.map((news) => (
+            <li key={news.id} style={{ margin: '1em 0' }}>
+              <Link href={`/news/${news.id}`}>
+                <strong>{news.title}</strong>
               </Link>
-              <div>{item.summary}</div>
+              <div>{news.summary}</div>
             </li>
           ))}
         </ul>
