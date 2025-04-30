@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-type News = {
+type NewsEmail = {
   id: number;
   sender: string;
   subject: string;
@@ -11,10 +11,10 @@ type News = {
 
 export default async function NewsListPage() {
   const res = await fetch(
-    'http://localhost:3001/news', { next: { revalidate: 0 } }
+    'http://localhost:3001/api/news', { next: { revalidate: 0 } }
   );
 
-  const { data: news }: { data: News[] } = await res.json();
+  const { data: news }: { data: NewsEmail[] } = await res.json();
 
   return (
     <div style={{ padding: 20 }}>
