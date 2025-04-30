@@ -1,12 +1,8 @@
-/// <reference types="vitest/globals" />
-import { config } from 'dotenv';
-import path from 'path';
-
-config({ path: path.resolve(__dirname, '../.env.test') });
-
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
+import { PrismaClient } from '../generated/prisma';
 import { app } from '../src/app';
-import { prisma } from '../prisma/client';
+
+const testPrisma = new PrismaClient();
 
 describe('News Email API', {}, () => {
   const today = new Date();
@@ -17,7 +13,7 @@ describe('News Email API', {}, () => {
   let yesterdayNewsId: number;
 
   beforeAll(async () => {
-    const yesterdayNews = await prisma.newsEmail.create({
+    const yesterdayNews = await testPrisma.newsEmail.create({
       data: {
         sender: 'test@example.com',
         subject: 'Test Subject',
@@ -29,7 +25,7 @@ describe('News Email API', {}, () => {
 
     yesterdayNewsId = yesterdayNews.id;
 
-    const todayNews = await prisma.newsEmail.create({
+    const todayNews = await testPrisma.newsEmail.create({
       data: {
         sender: 'test@example.com',
         subject: 'Today Test Subject',
@@ -43,8 +39,8 @@ describe('News Email API', {}, () => {
   });
 
   afterAll(async () => {
-    await prisma.newsEmail.deleteMany();
-    await prisma.$disconnect();
+    await testPrisma.newsEmail.deleteMany();
+    await testPrisma.$disconnect();
   });
 
   test('GET api/news/today should return all news in array', async () => {
@@ -93,7 +89,7 @@ describe('News Email API', {}, () => {
   });
 
   test('DELETE api/news/:id should remove and return deleted item', async () => {
-    const deleteMe = await prisma.newsEmail.create({
+    const deleteMe = await testPrisma.newsEmail.create({
       data: {
         sender: 'test@example.com',
         subject: 'To Delete',
@@ -110,7 +106,7 @@ describe('News Email API', {}, () => {
     expect(body.ok).toBe(true);
     expect(body.data).toHaveProperty('id', deleteMe.id);
 
-    const deletedItem = await prisma.newsEmail.findUnique({ where: { id: deleteMe.id } });
+    const deletedItem = await testPrisma.newsEmail.findUnique({ where: { id: deleteMe.id } });
     expect(deletedItem).toBeNull();
   });
 

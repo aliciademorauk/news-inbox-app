@@ -22,7 +22,7 @@ async function main() {
     ]
   })
 
-  console.log('Database has been seeded.')
+  console.log(`Database at ${process.env.DATABASE_URL} has been seeded.`)
   await prisma.$disconnect()
 }
 
