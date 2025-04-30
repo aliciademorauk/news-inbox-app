@@ -4,7 +4,7 @@ import {
   getTodaysNews,
   getNewsById,
   deleteNews
-} from '../services/news';
+} from '../services/fetchNews';
 
 export const news = new Hono();
 
