@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-
 export const NewsEmailSchema = z.object({
-  sender: z.string().email(),
+  senderEmail: z.string().email(),
+  senderName: z.string(),
   subject: z.string(),
   title: z.string(),
   summary: z.string(),

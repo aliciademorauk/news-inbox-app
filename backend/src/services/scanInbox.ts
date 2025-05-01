@@ -1,7 +1,9 @@
-import { ImapFlow } from 'imapflow';
 import { simpleParser, ParsedMail } from 'mailparser';
-import 'dotenv/config';
+import { createImapClient } from './imapClient';
+import { NewsEmailSchema } from '../schemas/newsEmailSchema';
+import { saveNewsEmail } from '../db/newsEmailRepository';
 
+// this will be set by user on frontend form
 const allowedSenders = ['ramin.nakisa@pensioncraft.com'];
 
 export async function fetchEmailsFromSenders(senders: string[]): Promise<void> {
@@ -15,16 +17,7 @@ export async function fetchEmailsFromSenders(senders: string[]): Promise<void> {
 }
 
 async function fetchEmailsFromSender(sender: string): Promise<void> {
-  const client = new ImapFlow({
-    host: 'imap.mail.yahoo.com',
-    port: 993,
-    secure: true,
-    auth: {
-      user: process.env.IMAP_USER!,
-      pass: process.env.IMAP_PASS!,
-    }
-  });
-
+  const client = createImapClient();
   await client.connect();
   const lock = await client.getMailboxLock('INBOX');
 
@@ -33,8 +26,22 @@ async function fetchEmailsFromSender(sender: string): Promise<void> {
       { from: sender }, { source: true })) {
       const parsed: ParsedMail = await simpleParser(message.source);
 
-      console.log('From:', parsed.from?.text);
-      console.log('Subject:', parsed.subject);
+      const data = {
+        sender: parsed.from?.value[0]?.address ?? 'unknown@example.com',
+        subject: parsed.subject,
+        title: parsed.subject, // placeholder... needs to come from headings in parsed.html
+        summary: parsed.text, // placeholder... needs to come from p tags in parsed.html
+        receivedAt: parsed.date,
+      }
+
+      const validated = NewsEmailSchema.safeParse(data);
+
+      if (!validated.success) {
+        console.error('Invalid email data:', validated.error.flatten().fieldErrors);
+        continue;
+      }
+
+      await saveNewsEmail(validated.data);
     }
   } finally {
     lock.release();
@@ -42,5 +49,4 @@ async function fetchEmailsFromSender(sender: string): Promise<void> {
   }
 }
 
-
-fetchEmailsFromSenders(allowedSenders);
+// fetchEmailsFromSenders(allowedSenders);

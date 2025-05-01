@@ -1,6 +1,4 @@
-import { PrismaClient } from '../generated/prisma'
-
-const prisma = new PrismaClient()
+import { prisma } from '../prisma/client';
 
 async function main() {
   await prisma.newsEmail.createMany({
@@ -20,10 +18,10 @@ async function main() {
         receivedAt: new Date(Date.now() - 3_600_000 * 5)
       }
     ]
-  })
+  });
 
-  console.log(`Database at ${process.env.DATABASE_URL} has been seeded.`)
-  await prisma.$disconnect()
+  console.log(`Database at ${process.env.DATABASE_URL} has been seeded.`);
+  await prisma.$disconnect();
 }
 
 main()
@@ -31,4 +29,4 @@ main()
     console.error('Seeding failed:', e)
     prisma.$disconnect()
     process.exit(1)
-  })
+  });
