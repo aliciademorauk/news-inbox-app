@@ -12,4 +12,11 @@ app.get('/', (c) => {
   return c.text('Wooo Health Check!')
 });
 
+app.onError((error, c) => {
+  console.error('Unhandled error:', error);
+  return c.json(
+    { ok: false, error: error.message || 'Internal Server Error' }, 500
+  )
+})
+
 app.route('/api/news', newsRoutes);
