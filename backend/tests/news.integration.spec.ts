@@ -1,8 +1,7 @@
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
-import { PrismaClient } from '../generated/prisma';
+import { testPrisma } from './prisma/client';
+import type { User } from './prisma/client';
 import { app } from '../src/app';
-
-const testPrisma = new PrismaClient();
 
 describe('News Email API', {}, () => {
   const today = new Date();
@@ -11,8 +10,13 @@ describe('News Email API', {}, () => {
 
   let todayNewsId: number;
   let yesterdayNewsId: number;
+  let user: User;
 
   beforeAll(async () => {
+    user = await testPrisma.user.create({
+      data: { email: 'test@example.com' },
+    });
+
     const yesterdayNews = await testPrisma.newsEmail.create({
       data: {
         senderEmail: 'test@example.com',
@@ -20,7 +24,8 @@ describe('News Email API', {}, () => {
         subject: 'Test Subject',
         title: 'Test Title',
         summary: 'Test Summary',
-        receivedAt: yesterday
+        receivedAt: yesterday,
+        userId: user.id
       },
     });
 
@@ -32,7 +37,8 @@ describe('News Email API', {}, () => {
         subject: 'Today Test Subject',
         title: 'Today Test Title',
         summary: 'Today Test Summary',
-        receivedAt: today
+        receivedAt: today,
+        userId: user.id
       },
     });
 
@@ -41,6 +47,8 @@ describe('News Email API', {}, () => {
 
   afterAll(async () => {
     await testPrisma.newsEmail.deleteMany();
+    await testPrisma.user.deleteMany();
+    await testPrisma.allowedSender.deleteMany(),
     await testPrisma.$disconnect();
   });
 
@@ -96,7 +104,8 @@ describe('News Email API', {}, () => {
         subject: 'To Delete',
         title: 'Delete Me',
         summary: 'I Will Be Gone',
-        receivedAt: new Date()
+        receivedAt: new Date(),
+        userId: user.id
       },
     });
 
