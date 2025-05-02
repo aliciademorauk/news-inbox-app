@@ -14,5 +14,5 @@ A full-stack TypeScript web app. Built with:
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/<your-username>/news-inbox-app.git
+git clone https://github.com/aliciademorauk/news-inbox-app.git
 cd news-inbox-app
