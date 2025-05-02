@@ -1,4 +1,4 @@
-# 🗞️ news-inbox-app
+# news-inbox-app
 
 A full-stack TypeScript web app. Built with:
 
