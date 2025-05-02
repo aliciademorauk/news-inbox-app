@@ -4,6 +4,7 @@ node_modules
 .env.test
 
 /generated/prisma/
-# Prisma SQLite dev database
+
+# Prisma SQLite dbs
 /prisma/dev.db
 /prisma/test.db

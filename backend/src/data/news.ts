@@ -1,4 +1,4 @@
-import { prisma, type NewsEmail } from '../../../prisma/client';
+import { prisma, type NewsEmail } from '../../prisma/client';
 
 export async function getAllNews(): Promise<NewsEmail[]> {
   return prisma.newsEmail.findMany({ orderBy: { receivedAt: 'desc' }});
