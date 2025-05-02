@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "ts-node src/server.ts",
     "init:test-db": "ts-node tests/initTestDB.ts",
-    "seed": "ts-node prisma/seed.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.1",
