@@ -75,14 +75,14 @@ describe('News Email API', {}, () => {
     expect(body.data).toHaveProperty('id', todayNewsId);
   });
 
-  test('GET api/news/invalid-type should return 404', async () => {
+  test('GET api/news/invalid-type should return bad request', async () => {
     const res = await app.request('api/news/invalid');
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.ok).toBe(false);
   });
 
-  test('GET /api/news/999 should return 404', async () => {
+  test('GET /api/news/999 should return record not found', async () => {
     const res = await app.request('/api/news/999');
     expect(res.status).toBe(404);
     const body = await res.json();
@@ -111,14 +111,14 @@ describe('News Email API', {}, () => {
     expect(deletedItem).toBeNull();
   });
 
-  test('DELETE api/news/invalid-type should return 404', async () => {
+  test('DELETE api/news/invalid-type should return bad request', async () => {
     const res = await app.request('api/news/invalid', { method: 'DELETE' });
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.ok).toBe(false);
   });
 
-  test('DELETE /api/news/999 should return 404 if record not found', async () => {
+  test('DELETE /api/news/999 should return record not found', async () => {
     const res = await app.request('/api/news/999', { method: 'DELETE' });
     expect(res.status).toBe(404);
     const body = await res.json();
