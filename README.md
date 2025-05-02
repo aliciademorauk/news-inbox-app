@@ -11,6 +11,8 @@ A full-stack TypeScript web app. Built with:
 
 ## 🚀 Getting Started
 
+(Scripts at root of repo to be created)
+
 ### 1. Clone the repo
 
 ```bash
