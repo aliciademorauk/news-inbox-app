@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -11,13 +8,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  name           String?
+  createdAt      DateTime        @default(now())
+  allowedSenders AllowedSender[]
+  newsEmails     NewsEmail[]
+}
+
+model AllowedSender {
+  id      Int    @id @default(autoincrement())
+  email   String
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([email, userId])
+}
+
 model NewsEmail {
-  id Int @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  senderEmail String
-  senderName String?
-  subject String
-  title String
-  summary String
-  receivedAt  DateTime
+  id           Int      @id @default(autoincrement())
+  senderEmail  String
+  senderName   String?
+  subject      String
+  title        String
+  summary      String
+  receivedAt   DateTime
+  createdAt    DateTime @default(now())
+
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
 }
