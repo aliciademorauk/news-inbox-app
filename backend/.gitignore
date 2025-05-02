@@ -6,4 +6,4 @@ node_modules
 /generated/prisma/
 # Prisma SQLite dev database
 /prisma/dev.db
-/prisma/dev.test.db
+/prisma/test.db

@@ -4,11 +4,16 @@ import {
   getTodaysNews,
   getNewsById,
   deleteNews
-} from '../services/news';
+} from './fetchNews';
 
-export const news = new Hono();
+export const newsRoutes = new Hono();
 
-news.get('/', async (c) => {
+// newRoutes.get(getNewsRoute, getNewsHandler)
+// newRoutes.get(getTodaysNewsRoute, getTodaysNewsHandler)
+// newRoutes.get(getNewsByIdRoute, getNewsByIdHandler)
+// newRoutes.get(updateUserRoute, updateUserRouteHandler)
+
+newsRoutes.get('/', async (c) => {
   try {
     const allNews = await getAllNews();
     return c.json({ ok: true, data: allNews });
@@ -17,7 +22,7 @@ news.get('/', async (c) => {
   }
 });
 
-news.get('/today', async (c) => {
+newsRoutes.get('/today', async (c) => {
   try {
     const todayNews = await getTodaysNews();
     return c.json({ ok: true, data: todayNews });
@@ -26,7 +31,7 @@ news.get('/today', async (c) => {
   }
 });
 
-news.get('/:id', async (c) => {
+newsRoutes.get('/:id', async (c) => {
   try {
     const id = Number(c.req.param('id'));
     if (isNaN(id)) return c.json({ ok: false, error: 'Invalid News ID' }, 404);
@@ -40,7 +45,7 @@ news.get('/:id', async (c) => {
   }
 });
 
-news.delete('/:id', async (c) => {
+newsRoutes.delete('/:id', async (c) => {
   try {
     const id = Number(c.req.param('id'));
     if (isNaN(id)) return c.json({ ok: false, error: 'Invalid News ID' }, 404);
