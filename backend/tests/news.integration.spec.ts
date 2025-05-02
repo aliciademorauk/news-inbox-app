@@ -15,7 +15,8 @@ describe('News Email API', {}, () => {
   beforeAll(async () => {
     const yesterdayNews = await testPrisma.newsEmail.create({
       data: {
-        sender: 'test@example.com',
+        senderEmail: 'test@example.com',
+        senderName: 'I Am Test',
         subject: 'Test Subject',
         title: 'Test Title',
         summary: 'Test Summary',
@@ -27,7 +28,7 @@ describe('News Email API', {}, () => {
 
     const todayNews = await testPrisma.newsEmail.create({
       data: {
-        sender: 'test@example.com',
+        senderEmail: 'test@example.com',
         subject: 'Today Test Subject',
         title: 'Today Test Title',
         summary: 'Today Test Summary',
@@ -91,7 +92,7 @@ describe('News Email API', {}, () => {
   test('DELETE api/news/:id should remove and return deleted item', async () => {
     const deleteMe = await testPrisma.newsEmail.create({
       data: {
-        sender: 'test@example.com',
+        senderEmail: 'test@example.com',
         subject: 'To Delete',
         title: 'Delete Me',
         summary: 'I Will Be Gone',

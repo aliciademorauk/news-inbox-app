@@ -4,14 +4,14 @@ async function main() {
   await prisma.newsEmail.createMany({
     data: [
       {
-        sender: 'noreply@dailynews.com',
+        senderEmail: 'noreply@dailynews.com',
         subject: 'Your April Rundown',
         title: 'April Highlights',
         summary: 'A quick tour of what has happened in April.',
         receivedAt: new Date()
       },
       {
-        sender: 'noreply@newsfeed.com',
+        senderEmail: 'noreply@newsfeed.com',
         subject: 'Breaking: Power Outage',
         title: 'Spain and Portugal Lose Power For A Day',
         summary: 'Details on what happened yesterday in the Iberian Peninsula.',

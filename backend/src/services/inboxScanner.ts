@@ -1,6 +1,6 @@
 import { simpleParser, ParsedMail } from 'mailparser';
 import { createImapClient } from './imapClient';
-import { NewsEmailSchema } from '../schemas/newsEmailSchema';
+import { NewsEmailSchema } from '../schemas/newsEmail.schema';
 import { saveNewsEmail } from '../db/newsEmailRepository';
 
 // this will be set by user on frontend form
